@@ -4,9 +4,6 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +16,6 @@ import com.oracle.challenge.common.Interpreter;
 import com.oracle.challenge.common.Python;
 import com.oracle.challenge.model.NoteBookInput;
 import com.oracle.challenge.model.NoteBookOutput;
-
-import antlr.PythonCodeGenerator;
 
 @Service
 public class NoteBookService {
@@ -39,14 +34,12 @@ public class NoteBookService {
 		NoteBookOutput noteBookOutput = new NoteBookOutput();
 		try {
 			String[] splitedInput = noteBookInput.getCode().split(" ", 2);
-			String interpreter = splitedInput[0].substring(1);
+			String interpreterName = splitedInput[0].substring(1);
 			String code = splitedInput[1];
 			
-			System.out.println(interpreter);
-			System.out.println(code);
-			/*
-			interpretersMap.get(Enums.InterpreterIdentifier.fromValue(interpreter));
-			*/
+			Interpreter interpreter = (Interpreter) context.getBean(interpretersMap.get(Enums.InterpreterIdentifier.fromValue(interpreterName)));
+			interpreter.interpret(code);
+			
 			//script that will hold all inputs, and gets fed with new input when ever the endpoint is called
 			BufferedWriter out = new BufferedWriter(new FileWriter("script.py", true));
 			out.append("\n"+code);
@@ -74,9 +67,6 @@ public class NoteBookService {
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		return noteBookOutput;
