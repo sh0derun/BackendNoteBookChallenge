@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import com.oracle.challenge.common.Interpreter;
 import com.oracle.challenge.common.Python;
 import com.oracle.challenge.model.NoteBookInput;
 import com.oracle.challenge.model.NoteBookOutput;
+import com.oracle.challenge.service.Python3Parser.File_inputContext;
 
 @Service
 public class NoteBookService {
@@ -45,6 +49,14 @@ public class NoteBookService {
 			out.append("\n"+code);
 			out.close();
 			
+			CharStream charStream = CharStreams.fromString(code);
+			Python3Lexer lexer = new Python3Lexer(charStream);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			Python3Parser parser = new Python3Parser(tokens);
+			File_inputContext context = parser.file_input();
+			String text = context.getText();
+			
+			
 			Process process = null;
 			
 			//script execution
@@ -59,7 +71,7 @@ public class NoteBookService {
 			ByteArrayOutputStream result = new ByteArrayOutputStream();
 			byte[] buffer = new byte[1024];
 			int length;
-			while ((length = process.getInputStream().read(buffer)) != -1) {
+			while ((length = process.getErrorStream().read(buffer)) != -1) {
 				result.write(buffer, 0, length);
 			}
 			
