@@ -22,4 +22,29 @@ public class Enums {
 			return null;
 		}
 	}
+	
+	public enum Statement{
+		EXPRESSION_STMT("expr_stmt"),
+		FUNCTION_DEF("funcdef"),
+		CLASS_DEF("classdef");
+		
+		private String value;
+		
+		private Statement(String value) {
+			this.value = value;
+		}
+
+		public String toString() {
+			return String.valueOf(value);
+		}
+		
+		public static Statement fromValue(String text) {
+			for (Statement b : Statement.values()) {
+				if (String.valueOf(b.value).equals(text)) {
+					return b;
+				}
+			}
+			return null;
+		}
+	}
 }

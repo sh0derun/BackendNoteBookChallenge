@@ -3,6 +3,7 @@ package com.oracle.challenge.model;
 public class NoteBookInput {
 	
 	private String code;
+	private String sessionId;
 
 	public String getCode() {
 		return code;
@@ -10,6 +11,14 @@ public class NoteBookInput {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 
 }

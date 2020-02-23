@@ -1,8 +1,16 @@
 package com.oracle.challenge.common;
 
-public interface Interpreter {
+import java.io.IOException;
+import java.util.Map;
+
+import com.oracle.challenge.model.NoteBookOutput;
+
+public abstract class Interpreter {
 	
-	public void initInterpreter();
-	public void interpret(String code);
+	protected String stateMemory = new String("");
+	
+	protected abstract void initInterpreter();
+	public abstract NoteBookOutput interpret(String code, Map<String, String> sessions, String session) throws IOException;
+	protected abstract String saveState(String code);
 
 }

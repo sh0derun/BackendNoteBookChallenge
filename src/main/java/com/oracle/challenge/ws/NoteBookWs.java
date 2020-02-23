@@ -25,7 +25,6 @@ public class NoteBookWs {
 					consumes = { "application/json;charset=utf-8" }, 
 					method = RequestMethod.POST)
 	ResponseEntity<NoteBookOutput> executeScript(@Valid @RequestBody NoteBookInput noteBookInput) {
-		
 		NoteBookOutput noteBookOutput = this.noteBookService.HandelNoteBookInput(noteBookInput);
 		return new ResponseEntity<NoteBookOutput>(noteBookOutput, HttpStatus.CREATED);
 		
